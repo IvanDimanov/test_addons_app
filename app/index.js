@@ -23,17 +23,16 @@ function log (...args) { // eslint-disable-line no-unused-vars
   return console.log(...args)
 }
 
-import config from '../config'
-import promisedMongo from 'promised-mongo'
-
-/* Try to establish DB connection */
-const mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`)
-
-log(mongoDb)
-
 import express from 'express'
 import winston from 'winston'
 import expressWinston from 'express-winston'
+import config from '../config'
+
+import promisedMongo from 'promised-mongo'
+
+/* Try to establish DB connection and present it to all local modules */
+/* TODO: Auth */
+global.mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`)
 
 const app = express()
 
@@ -51,9 +50,20 @@ app.use(expressWinston.logger({
   ignoreRoute: function (req, res) { return false } // optional: allows to skip some log messages based on request and/or response
 }))
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+import accountsRouter from './routes/accounts'
+import usersRouter from './routes/users'
+
+app.use('/accounts', accountsRouter)
+app.use('/users', usersRouter)
+
+/* Never miss an error */
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console({
+      colorize: true
+    })
+  ]
+}))
 
 /* Kickoff with the Express server, ready to accept requests */
 const server = app.listen(config.frontEndServer.port, config.frontEndServer.ip, function onServerStarted () {
