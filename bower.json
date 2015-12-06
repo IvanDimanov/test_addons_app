@@ -1,0 +1,18 @@
+{
+  "name"   : "test_addons_app",
+  "authors": [
+    "Ivan Dimanov <socialhub@idimanov.com>"
+  ],
+  "description" : "List of vendor dependencies",
+  "main"        : "./frontend-app/index.js",
+  "dependencies": {
+    "jquery"        : "2.1.4",
+    "bootstrap"     : "3.3.6",
+    "underscore"    : "1.8.3",
+    "backbone"      : "1.2.3",
+    "marionette"    : "2.4.4",
+    "backbone.radio": "1.0.2"
+  },
+  "private": true,
+  "license": "MIT"
+}

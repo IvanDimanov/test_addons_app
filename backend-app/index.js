@@ -36,6 +36,9 @@ global.mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.
 
 const app = express()
 
+/* UI resource location for all JS and CSS */
+app.use(express.static('../frontend-app/public'))
+
 /* Standard logging for all requests */
 app.use(expressWinston.logger({
   transports: [
