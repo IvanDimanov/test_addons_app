@@ -1,5 +1,6 @@
 /data
 /notes
 /node_modules
-.npm-debug.log
+npm-debug.log
 /frontend-app/assets/vendor
+/frontend-app/public/assets
