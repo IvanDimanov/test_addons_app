@@ -111,6 +111,23 @@ function getConfig (fileName) {
     }
     config.database.name = configUntested.database.name
 
+    if (!configUntested.frontEndServer ||
+        typeof configUntested.frontEndServer !== 'object'
+    ) {
+      throw new Error(`Config file "${filePath}" have invalid property {object} "frontEndServer" = {${typeof configUntested.frontEndServer}} "${utils.toString(configUntested.frontEndServer)}"`)
+    }
+    config.frontEndServer = {}
+
+    if (!validator.isIP(configUntested.frontEndServer.ip)) {
+      throw new Error(`Config file "${filePath}" have invalid property {IP} "frontEndServer.ip" = {${typeof configUntested.frontEndServer.ip}} "${utils.toString(configUntested.frontEndServer.ip)}"`)
+    }
+    config.frontEndServer.ip = configUntested.frontEndServer.ip
+
+    if (!validator.isInt(configUntested.frontEndServer.port, {min: 0})) {
+      throw new Error(`Config file "${filePath}" have invalid property {port} "frontEndServer.port" = {${typeof configUntested.frontEndServer.port}} "${utils.toString(configUntested.frontEndServer.port)}"`)
+    }
+    config.frontEndServer.port = configUntested.frontEndServer.port
+
     /* Be sure no one will be able to alter the set and valid configuration */
     return utils.recursiveFreezeObject(config)
   } catch (error) {
