@@ -23,19 +23,21 @@ function log (...args) { // eslint-disable-line no-unused-vars
   return console.log(...args)
 }
 
-import config from './config'
+import config from '../config'
 import promisedMongo from 'promised-mongo'
 
 /* Try to establish DB connection */
 const mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`)
 
+log(mongoDb)
+
+import express from 'express'
 import winston from 'winston'
 import expressWinston from 'express-winston'
-import express from 'express'
 
 const app = express()
 
-/* Standard request logging */
+/* Standard logging for all requests */
 app.use(expressWinston.logger({
   transports: [
     new winston.transports.Console({

@@ -1,6 +1,6 @@
 {
   "name"       : "test_addons_app",
-  "version"    : "0.1.0",
+  "version"    : "0.2.0",
   "description": "Testing a tech stack of MongoDB, Express, Node, Backbone and Marionette",
   "readme"     : "README.md",
   "author"     : "ivandimanov <socialhub@idimanov.com>",
@@ -12,10 +12,22 @@
   },
   "scripts": {
     "start"      : "NODE_ENV=\"production\"  babel-node babel_index.js",
-    "development": "NODE_ENV=\"development\" babel-node babel_index.js --config_file_name=development_config.json"
+    "development": "NODE_ENV=\"development\" babel-node babel_index.js --config_file_name=development_config.json",
+    "lint"       : "standard",
+    "set-data"   : "babel-node ./data/recreate-addons-collection.js"
   },
   "engines": {
     "node" : ">=4.0"
+  },
+  "standard": {
+    "ignore": [
+      ".git/",
+      "node_modules/",
+      "data/",
+      "notes/",
+      "config/index.js",
+      "config/utils.js"
+    ]
   },
   "dependencies": {
     "babel"       : "6.0.15",
@@ -49,5 +61,8 @@
     "promised-mongo"      : "1.2.0",
     "validator"           : "4.2.1",
     "winston"             : "2.1.1"
+  },
+  "devDependencies": {
+    "standard": "5.4.1"
   }
 }
