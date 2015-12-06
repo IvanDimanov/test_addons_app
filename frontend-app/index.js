@@ -21,12 +21,12 @@ const AccountModel = require('./components/account/model')
   const layout = new Layout()
 
   /* Present the currently logged User-Account */
-  /* TODO: Currently hard-coded, load the data from the Server */
-  {
-    const accountModel = new AccountModel({name: 'Atanas Atanasov'})
-    const accountView = new AccountView({model: accountModel})
-    layout.account.show(accountView)
-  }
+  const accountModel = new AccountModel({id: '562a1a83cb11b8bc0f07c5b4'})
+  accountModel.fetch()
+    .then(function onAccountInSync () {
+      const accountView = new AccountView({model: accountModel})
+      layout.account.show(accountView)
+    })
 
   /* This function is responsible for the page rendering as reaction of a URL change */
   const onPageView = (function onPageViewWrap () {
