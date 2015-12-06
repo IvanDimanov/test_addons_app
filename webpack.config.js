@@ -4,8 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = {
   entry: './frontend-app/index.js',
   output: {
-    path: './frontend-app/public/assets',
-    filename: 'bundle.js'
+    path: './frontend-app/public',
+    filename: 'assets/bundle.js'
   },
 
   cache: false,
@@ -21,6 +21,6 @@ module.exports = {
     }]
   },
   plugins: [
-    new ExtractTextPlugin('bundle.css')
+    new ExtractTextPlugin('assets/bundle.css')
   ]
 }

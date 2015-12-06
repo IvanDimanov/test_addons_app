@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/bundle.css" />
+  <title>Backbone Test App</title>
+  <script src="http://localhost:8080/webpack-dev-server.js"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse">
+    <div class="navbar navbar-inverse">
+      <a href="#tickets"><h4 class="navbar-text">SocialHub</h4></a>
+      <a href="https://socialhubio.zendesk.com/hc/de/articles/205641291" target="_blank" data-bypass="" class="navbar-brand" title="Changelog">
+       v1.22.7
+      </a>
+      <a href="#addons"><h4 class="navbar-text">Addons</h4></a>
+    </div>
+  </nav>
+
+  <nav class="side-links">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="channels-button " role="presentation">
+        <a href="#channels"><span class="glyphicon glyphicon-list"></span> Channels</a>
+      </li>
+      <li class="users-button " role="presentation">
+        <a href="#users"><span class="glyphicon glyphicon-user"></span> User</a>
+      </li>
+      <li class="features-button active " role="presentation">
+        <a href="#features"><span class="glyphicon glyphicon-plus-sign"></span> Features</a>
+      </li>
+      <li class="personal-button " role="presentation">
+        <a href="#personal"><span class="glyphicon glyphicon-cog"></span> Personal</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    Test Content
+  </main>
+
+  <script type="text/template" class="account-template">
+    <span class="glyphicon glyphicon-user big-when-narrow"></span>
+    <span class="glyphicon glyphicon-user"></span>
+    <%= name %>
+  </script>
+
+  <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="assets/vendor/underscore/underscore-min.js"></script>
+  <script src="assets/vendor/backbone/backbone-min.js"></script>
+  <script src="assets/bundle.js"></script>
+</body>
+</html>

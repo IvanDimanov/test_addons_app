@@ -23,6 +23,7 @@ function log (...args) { // eslint-disable-line no-unused-vars
   return console.log(...args)
 }
 
+import path from 'path'
 import express from 'express'
 import winston from 'winston'
 import expressWinston from 'express-winston'
@@ -36,8 +37,19 @@ global.mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.
 
 const app = express()
 
+/* No need for revealing the Backend serving mechanism */
+app.disable('x-powered-by')
+
+/* Let the Frontend know whats the running environment */
+app.use(function setEnvironmentHeader (req, res, next) {
+  if (!res.headersSent) {
+    res.header('x-environment', config.environment)
+  }
+  next()
+})
+
 /* UI resource location for all JS and CSS */
-app.use(express.static('../frontend-app/public'))
+app.use(express.static(path.resolve(__dirname + '/../frontend-app/public')))
 
 /* Standard logging for all requests */
 app.use(expressWinston.logger({
