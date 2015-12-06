@@ -5,10 +5,10 @@ require('./style.scss')
 
 module.exports = Backbone.Marionette.Application.extend({
   el: 'body',
-
   regions: {
     navigation: 'nav.navbar',
     sideLinks: 'nav.side-links',
-    content: 'main'
+    content: 'main',
+    account: '#account'
   }
 })
