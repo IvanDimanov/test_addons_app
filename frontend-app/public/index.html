@@ -41,10 +41,20 @@
     Test Content
   </main>
 
-  <script type="text/template" class="account-template">
+
+  <script type="text/template" id="account-template">
     <span class="glyphicon glyphicon-user"></span>
     <%= name %>
   </script>
+
+
+  <script type="text/template" id="demo-page-template">
+    <div class="demo-page">
+      <h3><%= title %></h3>
+      <p ><%= content %></p>
+    </div>
+  </script>
+
 
   <script src="assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="assets/vendor/underscore/underscore-min.js"></script>

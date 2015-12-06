@@ -1,8 +1,6 @@
 /* global Backbone $ */
 'use strict'
 
-require('./components/index.scss')
-
 /* Used for debugging only */
 function log () { // eslint-disable-line no-unused-vars
   return console.log.apply(console, arguments)
@@ -10,20 +8,46 @@ function log () { // eslint-disable-line no-unused-vars
 
 require('./components/router')
 
+const Layout = require('./components/layout')
+const DemoPageView = require('./components/demo-page/view')
+const DemoPageModel = require('./components/demo-page/model')
+
 ;(function main () {
   const navigationChannel = Backbone.Radio.channel('navigation')
+  const layout = new Layout()
 
-  function setActiveLink(link) {
-    $('li.active').removeClass('active')
-    $(`a[href="#${link}"]`)
-      .closest('li')
-      .addClass('active')
-  }
+  /* This function is responsible for the page rendering as reaction of a URL change */
+  const onPageView = (function onPageViewWrap () {
+    /* Set some easy-to-spot style for the link that loaded the current page */
+    function setActiveLink (link) {
+      $('li.active').removeClass('active')
+      $(`a[href="#${link}"]`)
+        .closest('li')
+        .addClass('active')
+    }
 
-  function onPageView (route) {
-    setActiveLink(route.link)
-  }
+    /* Print a demo content in our 'layout' in respect of the loaded page */
+    function setMainContent (route) {
+      const model = new DemoPageModel({
+        title: `Loaded page: ${route.link}`,
+        content: `Time at loading the page: ${new Date(route.time).toString()}`
+      })
 
+      const view = new DemoPageView({model: model})
+
+      layout.content.show(view)
+    }
+
+    return function onPageView (route) {
+      setActiveLink(route.link)
+      setMainContent(route)
+    }
+  })()
+
+  /*
+    Be sure that there will be a rendered page on every update
+    even if the Use clicked on preset link
+  */
   navigationChannel.on('change', onPageView)
   onPageView(navigationChannel.request('current-route'))
 })()
