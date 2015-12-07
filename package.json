@@ -15,7 +15,8 @@
     "develop" : "webpack-dev-server --content-base=./frontend-app/public",
     "lint"    : "standard",
     "build"   : "webpack",
-    "set-data": "babel-node ./data/recreate-features-collection.js"
+    "set-data": "babel-node ./data/recreate-features-collection.js",
+    "initial-build": "npm install && bower install && npm run set-data && npm run build"
   },
   "engines": {
     "node" : ">=4.0"
