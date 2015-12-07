@@ -1,6 +1,9 @@
 /* global Backbone $ _ alert */
 'use strict'
 
+/* TODO: Use a server loading approach */
+window.accountId = '562a1a83cb11b8bc0f07c5b4'
+
 /* Used for debugging only */
 function log () { // eslint-disable-line no-unused-vars
   return console.log.apply(console, arguments)
@@ -22,10 +25,9 @@ const FeatureModel = require('./components/features/model.js')
 ;(function main () {
   const navigationChannel = Backbone.Radio.channel('navigation')
   const layout = new Layout()
-  const featuresView = new FeaturesView()
 
   /* Present the currently logged User-Account */
-  const accountModel = new AccountModel({id: '562a1a83cb11b8bc0f07c5b4'})
+  const accountModel = new AccountModel({id: window.accountId})
   accountModel.fetch()
     .then(function onAccountInSync () {
       const accountView = new AccountView({model: accountModel})
@@ -93,8 +95,8 @@ const FeatureModel = require('./components/features/model.js')
           Promise.all(unfetchModel)
             .catch(error => alert(`Unable to get full information about your Addons: ${error.stack}`))
             .then(function allModelsFetched (models) {
-              /* Recreate the entire features data using the latest one fetched */
-              featuresView.collection.reset()
+              /* Recreate the entire view using the latest one fetched */
+              const featuresView = new FeaturesView()
               _.each(models, model => featuresView.collection.add(model))
 
               /* Render the collected features in the page */

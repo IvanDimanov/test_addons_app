@@ -27,6 +27,7 @@ import path from 'path'
 import express from 'express'
 import winston from 'winston'
 import expressWinston from 'express-winston'
+import bodyParser from 'body-parser'
 import config from '../config'
 
 import promisedMongo from 'promised-mongo'
@@ -68,6 +69,13 @@ app.use(expressWinston.logger({
 import accountsRouter from './routes/accounts'
 import usersRouter from './routes/users'
 import featuresRouter from './routes/features'
+
+/*
+  Parse all the incoming update requests
+  as JSON or application/x-www-form-urlencoded
+*/
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/accounts', accountsRouter)
 app.use('/users', usersRouter)

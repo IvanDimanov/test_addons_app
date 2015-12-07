@@ -39,15 +39,14 @@
 
 
   <script type="text/template" id="feature-template">
-    <%= isPremium %>
-    <div class="col-lg-8 panel <% if (isSet) {%>panel-success<%} else {%>panel-default<%} %> feature">
+    <div data-id="<%= id %>" class="col-lg-8 panel <% if (isSet) {%>panel-success<%} else {%>panel-default<%} %> feature">
       <div class="panel-heading row feature-wrapper">
         <div class="col-lg-7 feature-name-wrapper">
           <h4 class="feature-name"><%= title %></h4>
         </div>
         <div class="col-lg-5 feature-checkbox-wrapper">
           <div class="pull-right checkbox">
-            <input type="checkbox" <% if (isSet) {%>checked="checked"<%} %> />
+            <input type="checkbox" class="feature-checkbox" <% if (isSet) {%>checked="checked"<%} %> />
           </div>
         </div>
       </div>
