@@ -24,6 +24,7 @@ const FeatureModel = require('./components/features/model.js')
 
 ;(function main () {
   const navigationChannel = Backbone.Radio.channel('navigation')
+  const featuresChannel = Backbone.Radio.channel('features')
   const layout = new Layout()
 
   /* Present the currently logged User-Account */
@@ -121,4 +122,60 @@ const FeatureModel = require('./components/features/model.js')
   */
   navigationChannel.on('change', onPageView)
   onPageView(navigationChannel.request('current-route'))
+
+  /*
+    The code below will create a regular pulls of features.
+    It till emit in the 'featuresChannel' in case of newly added features
+  */
+  ;(function () {
+    let previousFeatureTitles = []
+
+    function checkForNewFeatures () {
+      $.get('/features')
+        .done(function done (features) {
+          const currentTitles = features
+            .map(feature => feature.title)
+            .sort()
+
+          /* Set initial titles */
+          if (!previousFeatureTitles.length) {
+            previousFeatureTitles = currentTitles
+          }
+
+          /* Detect an update since the last time we checked */
+          if (previousFeatureTitles.join(', ') !== currentTitles.join(', ')) {
+            currentTitles.forEach(function findNew (title) {
+              if (!~previousFeatureTitles.indexOf(title)) {
+                featuresChannel.trigger('new', {title})
+              }
+            })
+
+            previousFeatureTitles = currentTitles
+          }
+        })
+    }
+
+    /* Keep constant track of all newly added features */
+    checkForNewFeatures()
+    setInterval(checkForNewFeatures, 10000)
+  })()
+
+  /* Present a UI alert notification to the User for every newly added feature */
+  featuresChannel.on('new', function onNewFeature ({title}) {
+    const alertHtml = `
+      <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        New feaure <strong>${title}</strong> have just been available for you at you <b><a href="#features">Addons</a></b> section.
+      </div>
+    `
+    const $alert = $(alertHtml).alert()
+
+    /* Present the note to the User */
+    $(document.body).append($alert)
+
+    /* Do not let the notification hang infinitely */
+    setTimeout(function closeAlert () {
+      $alert.fadeOut(500, () => $alert.alert('close'))
+    }, 5000)
+  })
 })()

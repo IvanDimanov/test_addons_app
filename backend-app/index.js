@@ -95,3 +95,22 @@ const server = app.listen(config.frontEndServer.port, config.frontEndServer.ip, 
   log(`Express server is up & running at http://${server.address().address}:${server.address().port}`)
   /* TODO: Compare "server.address().address / port" with "config.frontEndServer.ip / port" */
 })
+
+/* A demo script that will add new unique features once in a while */
+;(function () {
+  function addFeature () {
+    const now = Date.now()
+    global.mongoDb.collection('features')
+      .insert({
+        _id: now,
+        title: `Feature ${now}`,
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        isPremium: now % 2
+      })
+  }
+
+  setTimeout(addFeature, 10000)
+  setTimeout(addFeature, 20000)
+  setTimeout(addFeature, 30000)
+  setTimeout(addFeature, 40000)
+})()
