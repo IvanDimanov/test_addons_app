@@ -11,11 +11,11 @@
     "url" : "https://github.com/IvanDimanov/test_addons_app"
   },
   "scripts": {
-    "start"   : "NODE_ENV=\"production\" babel-node babel_index.js",
+    "start"   : "webpack && NODE_ENV=\"production\" babel-node babel_index.js",
     "develop" : "webpack-dev-server --content-base=./frontend-app/public",
     "lint"    : "standard",
     "build"   : "webpack",
-    "set-data": "babel-node ./data/recreate-addons-collection.js"
+    "set-data": "babel-node ./data/recreate-features-collection.js"
   },
   "engines": {
     "node" : ">=4.0"

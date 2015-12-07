@@ -9,7 +9,6 @@
     routes: {
       '': 'homePage',
       'tickets': 'tickets',
-      'addons': 'addons',
       'channels': 'channels',
       'users': 'users',
       'features': 'features',
@@ -26,13 +25,6 @@
     tickets () {
       navigationChannel.trigger('change', currentRoute = {
         link: 'tickets',
-        time: Date.now()
-      })
-    },
-
-    addons () {
-      navigationChannel.trigger('change', currentRoute = {
-        link: 'addons',
         time: Date.now()
       })
     },

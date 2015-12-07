@@ -67,9 +67,11 @@ app.use(expressWinston.logger({
 
 import accountsRouter from './routes/accounts'
 import usersRouter from './routes/users'
+import featuresRouter from './routes/features'
 
 app.use('/accounts', accountsRouter)
 app.use('/users', usersRouter)
+app.use('/features', featuresRouter)
 
 /* Never miss an error */
 app.use(expressWinston.errorLogger({

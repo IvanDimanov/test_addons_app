@@ -14,7 +14,7 @@
       <a href="https://socialhubio.zendesk.com/hc/de/articles/205641291" target="_blank" data-bypass="" class="navbar-brand" title="Changelog">
        v1.22.7
       </a>
-      <a href="#addons"><h4 class="navbar-text">Addons</h4></a>
+      <a href="#features"><h4 class="navbar-text">Addons</h4></a>
       <div id="account"></div>
     </div>
   </nav>
@@ -27,9 +27,6 @@
       <li class="users-button " role="presentation">
         <a href="#users"><span class="glyphicon glyphicon-user"></span> User</a>
       </li>
-      <li class="features-button active " role="presentation">
-        <a href="#features"><span class="glyphicon glyphicon-plus-sign"></span> Features</a>
-      </li>
       <li class="personal-button " role="presentation">
         <a href="#personal"><span class="glyphicon glyphicon-cog"></span> Personal</a>
       </li>
@@ -39,6 +36,26 @@
   <main>
     Test Content
   </main>
+
+
+  <script type="text/template" id="feature-template">
+    <%= isPremium %>
+    <div class="col-lg-8 panel <% if (isSet) {%>panel-success<%} else {%>panel-default<%} %> feature">
+      <div class="panel-heading row feature-wrapper">
+        <div class="col-lg-7 feature-name-wrapper">
+          <h4 class="feature-name"><%= title %></h4>
+        </div>
+        <div class="col-lg-5 feature-checkbox-wrapper">
+          <div class="pull-right checkbox">
+            <input type="checkbox" <% if (isSet) {%>checked="checked"<%} %> />
+          </div>
+        </div>
+      </div>
+      <div class="panel-collapse">
+        <div class="panel-body"><%= description %></div>
+      </div>
+    </div>
+  </script>
 
 
   <script type="text/template" id="account-template">
