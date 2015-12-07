@@ -128,6 +128,44 @@ function getConfig (fileName) {
     }
     config.frontEndServer.port = configUntested.frontEndServer.port
 
+    if (!configUntested.emailService ||
+        typeof configUntested.emailService !== 'object'
+    ) {
+      throw new Error(`Config file "${filePath}" have invalid property {object} "emailService" = {${typeof configUntested.emailService}} "${utils.toString(configUntested.emailService)}"`)
+    }
+    config.emailService = {}
+
+    if (!configUntested.emailService.type ||
+        typeof configUntested.emailService.type !== 'string'
+    ) {
+      throw new Error(`Config file "${filePath}" have invalid property {string} "emailService.type" = {${typeof configUntested.emailService.type}} "${utils.toString(configUntested.emailService.type)}"`)
+    }
+    config.emailService.type = configUntested.emailService.type
+
+    if (!configUntested.emailService.auth ||
+        typeof configUntested.emailService.auth !== 'object'
+    ) {
+      throw new Error(`Config file "${filePath}" have invalid property {object} "emailService.auth" = {${typeof configUntested.emailService.auth}} "${utils.toString(configUntested.emailService.auth)}"`)
+    }
+    config.emailService.auth = {}
+
+    if (!validator.isEmail(configUntested.emailService.auth.user)) {
+      throw new Error(`Config file "${filePath}" have invalid property {email} "emailService.auth.user" = {${typeof configUntested.emailService.auth.user}} "${utils.toString(configUntested.emailService.auth.user)}"`)
+    }
+    config.emailService.auth.user = configUntested.emailService.auth.user
+
+    if (!configUntested.emailService.auth.password ||
+        typeof configUntested.emailService.auth.password !== 'string'
+    ) {
+      throw new Error(`Config file "${filePath}" have invalid property {string} "emailService.auth.password" = {${typeof configUntested.emailService.auth.password}} "${utils.toString(configUntested.emailService.auth.password)}"`)
+    }
+    config.emailService.auth.password = configUntested.emailService.auth.password
+
+    if (!validator.isEmail(configUntested.salesEmailAddress)) {
+      throw new Error(`Config file "${filePath}" have invalid property {email} "salesEmailAddress" = {${typeof configUntested.salesEmailAddress}} "${utils.toString(configUntested.salesEmailAddress)}"`)
+    }
+    config.salesEmailAddress = configUntested.salesEmailAddress
+
     /* Be sure no one will be able to alter the set and valid configuration */
     return utils.recursiveFreezeObject(config)
   } catch (error) {

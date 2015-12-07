@@ -1,4 +1,4 @@
-/* global Backbone $ */
+/* global Backbone $ alert */
 'use strict'
 
 /* Used for debugging only */
@@ -20,8 +20,18 @@ module.exports = Backbone.Marionette.CollectionView.extend({
         return model.id === id
       })
 
-      const isSet = !model.get('isSet')
-      model.set({isSet})
+      let isSet = !model.get('isSet')
+
+      /*
+        Premium features must be explicitly approved from sales
+        while regular features are directly activated
+      */
+      if (isSet && model.get('isPremium')) {
+        isSet = false
+        alert(`Your feature "${model.get('title')}" is part from our Premium package.\nAs such, it'll be immediatelly activated after a confirmation from our Sales team.`)
+      } else {
+        model.set({isSet})
+      }
 
       $.ajax({
         url: `/accounts/${window.accountId}/features`,

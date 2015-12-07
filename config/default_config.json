@@ -12,5 +12,15 @@
   "frontEndServer": {
     "ip"  : "127.0.0.1",
     "port": "8080"
-  }
+  },
+
+  "emailService": {
+    "type": "Gmail",
+    "auth": {
+      "user"    : "node.test.emailer@gmail.com",
+      "password": "o9$6&04k*(Y67"
+    }
+  },
+
+  "salesEmailAddress": "addons-test@mailinator.com"
 }
