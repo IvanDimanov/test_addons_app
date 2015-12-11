@@ -24,7 +24,7 @@ const FeatureModel = require('./components/features/model.js')
 
 ;(function main () {
   const navigationChannel = Backbone.Radio.channel('navigation')
-  const featuresChannel = Backbone.Radio.channel('features')
+  const featureChannel = Backbone.Radio.channel('feature')
   const layout = new Layout()
 
   /* Present the currently logged User-Account */
@@ -106,6 +106,18 @@ const FeatureModel = require('./components/features/model.js')
         })
     }
 
+    /*
+      We need to re-render the Feature page
+      if we've just had a notification that a new feature
+      is available for the currently loaded Account
+    */
+    featureChannel.on('new', function onNewFeature (feature) {
+      const currentRoute = navigationChannel.request('current-route')
+      if (currentRoute.link === 'features') {
+        renderAccountFeatures()
+      }
+    })
+
     return function onPageView (route) {
       setActiveLink(route.link)
       if (route.link === 'features') {
@@ -125,7 +137,7 @@ const FeatureModel = require('./components/features/model.js')
 
   /*
     The code below will create a regular pulls of features.
-    It till emit in the 'featuresChannel' in case of newly added features
+    It till emit in the 'featureChannel' in case of newly added features
   */
   ;(function () {
     let previousFeatureTitles = []
@@ -146,7 +158,7 @@ const FeatureModel = require('./components/features/model.js')
           if (previousFeatureTitles.join(', ') !== currentTitles.join(', ')) {
             currentTitles.forEach(function findNew (title) {
               if (!~previousFeatureTitles.indexOf(title)) {
-                featuresChannel.trigger('new', {title})
+                featureChannel.trigger('new', {title})
               }
             })
 
@@ -161,7 +173,7 @@ const FeatureModel = require('./components/features/model.js')
   })()
 
   /* Present a UI alert notification to the User for every newly added feature */
-  featuresChannel.on('new', function onNewFeature ({title}) {
+  featureChannel.on('new', function onNewFeature ({title}) {
     const alertHtml = `
       <div class="alert alert-success">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

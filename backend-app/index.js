@@ -95,13 +95,30 @@ const server = app.listen(config.frontEndServer.port, config.frontEndServer.ip, 
 ;(function () {
   async function addFeature () {
     const now = Date.now()
+    const featureId = `feature_${now}`
+    const isPremium = now % 2
+
+    /* Create a new dummy feature */
     const features = await db.collection('features')
     await features.insert({
-        _id: now,
+        _id: featureId,
         title: `Feature ${now}`,
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        isPremium: now % 2
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        isPremium: isPremium
       })
+
+    /* Set this new feature available for requesting to All accounts */
+    const accounts = await db.collection('accounts')
+    await accounts.update({
+      /* All accounts */
+    }, {
+      $set: {
+        [`${isPremium ? 'premiumFeatures' : 'features'}.${featureId}`]: false
+      }
+    }, {
+      upsert: true, /* Create a 'features' or 'premiumFeatures' list if necessary */
+      multi: true /* All accounts for sure */
+    })
   }
 
   setTimeout(addFeature, 10000)
