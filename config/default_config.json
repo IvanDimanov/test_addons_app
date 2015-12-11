@@ -4,14 +4,15 @@
   "database": {
     "server": {
       "ip"  : "127.0.0.1",
-      "port": 27017
+      "port": 27018
     },
-    "name": "addonsTest"
+    "name": "addonsTest",
+    "preCachedCollections": ["accounts", "features", "users"]
   },
 
   "frontEndServer": {
     "ip"  : "127.0.0.1",
-    "port": "8080"
+    "port": 8080
   },
 
   "emailService": {
@@ -22,5 +23,5 @@
     }
   },
 
-  "salesEmailAddress": "addons-test@mailinator.com"
+  "salesEmailAddress": "addons-test@idimanov.com"
 }

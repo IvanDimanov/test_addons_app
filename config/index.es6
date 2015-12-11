@@ -111,6 +111,20 @@ function getConfig (fileName) {
     }
     config.database.name = configUntested.database.name
 
+    if (!(configUntested.database.preCachedCollections instanceof Array)) {
+      throw new Error(`Config file "${filePath}" have invalid property {Array} "database.preCachedCollections" = {${typeof configUntested.database.preCachedCollections}} "${utils.toString(configUntested.database.preCachedCollections)}"`)
+    }
+    config.database.preCachedCollections = []
+
+    configUntested.database.preCachedCollections.forEach(function isItemACollectionName (collectionName, index) {
+      if (!collectionName ||
+          typeof collectionName !== 'string'
+      ) {
+        throw new Error(`Config file "${filePath}" have invalid property {string} "database.preCachedCollections[${index}]" = {${typeof collectionName}} "${utils.toString(collectionName)}"`)
+      }
+      config.database.preCachedCollections.push(collectionName)
+    })
+
     if (!configUntested.frontEndServer ||
         typeof configUntested.frontEndServer !== 'object'
     ) {

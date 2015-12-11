@@ -8,17 +8,18 @@ function log (...args) { // eslint-disable-line no-unused-vars
 import express from 'express'
 import nodemailer from 'nodemailer'
 import config from '../../config'
+import db from '../db'
 const router = express.Router()
 
 router.get('/', async function getAllAccounts (req, res) {
-  const accounts = await global.mongoDb.collection('accounts')
+  const accounts = await db.collection('accounts')
   res.json( await accounts.find().toArray() )
 })
 
 /* NOTE: Route matches 'id' parameter but searches the DB with '_id' */
 router.get('/:id', async function getSingleAccount (req, res) {
-  const accounts = await global.mongoDb.collection('accounts')
-  res.json( await accounts.findOne({_id: global.mongoDb.ObjectId(req.params.id)}) )
+  const accounts = await db.collection('accounts')
+  res.json( await accounts.findOne({_id: new db.ObjectID(req.params.id)}) )
 })
 
 /* Notify our sales team about the Premium request */
@@ -57,9 +58,9 @@ router.put('/:id/features', async function updateAccountFeatures (req, res) {
   const feature = req.body
   const featurePropertyName = `${feature.isPremium + '' === 'true' ? 'premiumFeatures' : 'features'}.${feature.id}`
 
-  const accounts = await global.mongoDb.collection('accounts')
+  const accounts = await db.collection('accounts')
   await accounts.update({
-    _id: global.mongoDb.ObjectId(req.params.id)
+    _id: new db.ObjectID(req.params.id)
   }, {
     $set: {
       [featurePropertyName]: feature.isSet + '' === 'true'  /* Data always comes as a string so string verification needed */
@@ -70,15 +71,15 @@ router.put('/:id/features', async function updateAccountFeatures (req, res) {
   })
 
   /* Send back exact picture of the updated Account */
-  res.json( await accounts.findOne({_id: global.mongoDb.ObjectId(req.params.id)}) )
+  res.json( await accounts.findOne({_id: new db.ObjectID(req.params.id)}) )
 
   /* Send a special approval email for the requested user Premium feature */
   if (feature.isSet + '' === 'true' &&
     feature.isPremium + '' === 'true'
   ) {
-    const user = await global.mongoDb.collection('users')
+    const user = await db.collection('users')
       .findOne({
-        accountId: global.mongoDb.ObjectId(req.params.id)
+        accountId: new db.ObjectID(req.params.id)
       }, {
         userName: 1,
         email: 1

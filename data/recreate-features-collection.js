@@ -24,33 +24,49 @@
   }
 
   const config = require('../config').default
-  const promisedMongo = require('promised-mongo')
+  const MongoClient = require('mongodb').MongoClient
 
   /* Try to establish DB connection */
-  const mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`)
+  const mongoDbURL = `mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`
+  const connectDb = MongoClient.connect(mongoDbURL)
 
-  /* Clear the way for the collection */
   const collectionName = 'features'
-  mongoDb.collection(collectionName).drop()
-    .catch(function onDropError (error) {
-      log(`Unable to drop collection "${collectionName}": ${error.stack}`)
+  let db
+  connectDb
+    .catch(function onConnectionError (error) {
+      log(`Unable to connect to "${mongoDbURL}": ${error.stack}`)
+      process.exit()
+    })
+    .then(function onConnectionSuccess (_db) {
+      /* Expose currently established DB connection using global variable */
+      db = _db
+    })
 
-      /* Note: 'mongodb.close()' throws but we need to exit anyway */
-      /* https://github.com/gordonmleigh/promised-mongo/issues/31#issuecomment-161629837 */
+    /* Clear the way for the collection */
+    .then(() => db.collection(collectionName).drop())
+    .catch(function onDropError (error) {
+      /* No need for trowing if the collection did not exist */
+      if (error.message === 'ns not found') {
+        return
+      }
+
+      log(`Unable to drop collection "${collectionName}": ${error.stack}`)
+      db.close()
       process.exit()
     })
 
     /* Try to establish the collection wrap */
-    .then(() => mongoDb.createCollection(collectionName))
+    .then(() => db.createCollection(collectionName))
     .catch(function onCreationError (error) {
       log(`Unable to create collection "${collectionName}": ${error.stack}`)
+      db.close()
       process.exit()
     })
     .then(() => log(`Collection "${collectionName}" successfully created`))
 
     /* Fill with test data that's already met in the 'accounts' collection */
     .then(function fillWithTestData () {
-      return mongoDb.collection(collectionName)
+      return db.collection(collectionName)
         .insert([{
           _id: 'security',
           title: 'Security',
@@ -95,9 +111,10 @@
     })
     .catch(function onCreationError (error) {
       log(`Unable to fill collection "${collectionName}" with test data: ${error.stack}`)
+      db.close()
       process.exit()
     })
     .then(() => log(`Test data successfuly loaded into collection "${collectionName}"`))
 
-    .then(process.exit)
+    .then(() => db.close())
 })()

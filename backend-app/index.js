@@ -29,12 +29,7 @@ import winston from 'winston'
 import expressWinston from 'express-winston'
 import bodyParser from 'body-parser'
 import config from '../config'
-
-import promisedMongo from 'promised-mongo'
-
-/* Try to establish DB connection and present it to all local modules */
-/* TODO: Auth */
-global.mongoDb = promisedMongo(`mongodb://${config.database.server.ip}:${config.database.server.port}/${config.database.name}`)
+import db from './db'
 
 const app = express()
 
@@ -98,10 +93,10 @@ const server = app.listen(config.frontEndServer.port, config.frontEndServer.ip, 
 
 /* A demo script that will add new unique features once in a while */
 ;(function () {
-  function addFeature () {
+  async function addFeature () {
     const now = Date.now()
-    global.mongoDb.collection('features')
-      .insert({
+    const features = await db.collection('features')
+    await features.insert({
         _id: now,
         title: `Feature ${now}`,
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

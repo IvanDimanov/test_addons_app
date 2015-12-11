@@ -1,6 +1,6 @@
 {
   "name"       : "test_addons_app",
-  "version"    : "0.2.0",
+  "version"    : "1.0.0",
   "description": "Testing a tech stack of MongoDB, Express, Node, Backbone and Marionette",
   "readme"     : "README.md",
   "author"     : "Ivan Dimanov <socialhub@idimanov.com>",
@@ -70,9 +70,9 @@
     "express"                    : "4.13.3",
     "express-winston"            : "0.4.1",
     "extract-text-webpack-plugin": "0.9.1",
+    "mongodb"                    : "2.1.0",
     "node-sass"                  : "3.4.2",
     "nodemailer"                 : "1.10.0",
-    "promised-mongo"             : "1.2.0",
     "sass-loader"                : "3.1.2",
     "style-loader"               : "0.13.0",
     "validator"                  : "4.2.1",
