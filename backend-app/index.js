@@ -101,11 +101,11 @@ const server = app.listen(config.frontEndServer.port, config.frontEndServer.ip, 
     /* Create a new dummy feature */
     const features = await db.collection('features')
     await features.insert({
-        _id: featureId,
-        title: `Feature ${now}`,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        isPremium: isPremium
-      })
+      _id: featureId,
+      title: `Feature ${now}`,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      isPremium: isPremium
+    })
 
     /* Set this new feature available for requesting to All accounts */
     const accounts = await db.collection('accounts')

@@ -11,12 +11,18 @@
     "url" : "https://github.com/IvanDimanov/test_addons_app"
   },
   "scripts": {
-    "start"   : "webpack && NODE_ENV=\"production\" babel-node babel_index.js",
-    "develop" : "webpack-dev-server --content-base=./frontend-app/public",
+    "start"   : "NODE_ENV=production babel-node babel_index.js",
     "lint"    : "standard",
     "build"   : "webpack",
     "set-data": "babel-node ./data/recreate-features-collection.js",
-    "initial-build": "npm install && bower install && npm run set-data && npm run build"
+
+    "initial-build": "npm install && bower install && npm run set-data && npm run build",
+
+    "develop-frontend": "webpack-dev-server --content-base=./frontend-app/public",
+
+    "develop-backend"     : "NODE_ENV=production pm2 start babel_index.js --interpreter=babel-node --name=test_addons_app --log=screen.log",
+    "postdevelop-backend" : "(babel-node .watch.js --watch=./backend-app --command=\"pm2 restart test_addons_app\" >> .watch.log &)",
+    "develop-backend-stop": "pm2 stop test_addons_app"
   },
   "engines": {
     "node" : ">=4.0"
@@ -65,6 +71,7 @@
     "babel-preset-stage-3"       : "6.1.2",
     "body-parser"                : "1.14.1",
     "bower"                      : "1.6.9",
+    "chokidar"                   : "1.4.0",
     "css-loader"                 : "0.23.0",
     "eslint"                     : "1.8.0",
     "express"                    : "4.13.3",
@@ -73,12 +80,14 @@
     "mongodb"                    : "2.1.0",
     "node-sass"                  : "3.4.2",
     "nodemailer"                 : "1.10.0",
+    "pm2"                        : "0.15.10",
     "sass-loader"                : "3.1.2",
     "style-loader"               : "0.13.0",
     "validator"                  : "4.2.1",
     "webpack"                    : "1.12.9",
     "webpack-dev-server"         : "1.14.0",
-    "winston"                    : "2.1.1"
+    "winston"                    : "2.1.1",
+    "yargs"                      : "3.31.0"
   },
   "devDependencies": {
     "standard": "5.4.1"

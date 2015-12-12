@@ -5,3 +5,5 @@
 npm-debug.log
 /frontend-app/assets/vendor
 /frontend-app/public/assets
+screen-0.log
+.watch.log

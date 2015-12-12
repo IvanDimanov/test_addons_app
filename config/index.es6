@@ -2,7 +2,7 @@
 
 import fs from 'fs'
 import validator from 'validator'
-import utils from './utils'
+import utils from '../utils'
 
 /* Used solely in debugging */
 const log = utils.log  // eslint-disable-line no-unused-vars
