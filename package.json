@@ -1,26 +1,32 @@
 {
   "name"       : "test_addons_app",
-  "version"    : "1.0.0",
+  "version"    : "1.1.0",
   "description": "Testing a tech stack of MongoDB, Express, Node, Backbone and Marionette",
   "readme"     : "README.md",
   "author"     : "Ivan Dimanov <socialhub@idimanov.com>",
-  "private"    : true,
   "license"    : "MIT",
   "repository" : {
     "type": "git",
     "url" : "https://github.com/IvanDimanov/test_addons_app"
   },
   "scripts": {
-    "start"   : "NODE_ENV=production babel-node babel_index.js",
-    "lint"    : "standard",
-    "build"   : "webpack",
-    "set-data": "babel-node ./data/recreate-features-collection.js",
+    "start": "cross-env NODE_ENV=production babel-node babel_index.js",
+    "lint" : "standard",
 
-    "initial-build": "npm install && bower install && npm run set-data && npm run build",
+    "create-db-files"  : "babel-node ./data/create-db-files.js",
+    "start-db"         : "(mongod --config=./data/configure_mongod.txt &); sleep 2",
+    "initial-db-start" : "npm run create-db-files && npm run start-db",
 
+    "set-basic-data"   : "mongorestore ./data/dump",
+    "set-features-data": "babel-node ./data/recreate-features-collection.js",
+    "set-db-data"      : "npm run set-basic-data && npm run set-features-data",
+
+    "initial-build": "npm install && bower install && npm initial-db-start && npm run build-frontend",
+
+    "build-frontend"  : "webpack",
     "develop-frontend": "webpack-dev-server --content-base=./frontend-app/public",
 
-    "develop-backend"     : "NODE_ENV=production pm2 start babel_index.js --interpreter=babel-node --name=test_addons_app --log=screen.log",
+    "develop-backend"     : "cross-env NODE_ENV=production pm2 start babel_index.js --interpreter=babel-node --name=test_addons_app --log=screen.log",
     "postdevelop-backend" : "(babel-node .watch.js --watch=./backend-app --command=\"pm2 restart test_addons_app\" >> .watch.log &)",
     "develop-backend-stop": "pm2 stop test_addons_app"
   },
@@ -34,7 +40,7 @@
       "data/",
       "notes/",
       "config/index.js",
-      "config/utils.js",
+      "utils.js",
       "frontend-app/assets/vendor",
       "frontend-app/assets/public"
     ]
@@ -72,6 +78,7 @@
     "body-parser"                : "1.14.1",
     "bower"                      : "1.6.9",
     "chokidar"                   : "1.4.0",
+    "cross-env"                  : "1.0.7",
     "css-loader"                 : "0.23.0",
     "eslint"                     : "1.8.0",
     "express"                    : "4.13.3",
