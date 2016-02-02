@@ -21,7 +21,7 @@
     "set-features-data": "babel-node ./data/recreate-features-collection.js",
     "set-db-data"      : "npm run set-basic-data && npm run set-features-data",
 
-    "initial-build": "npm install && bower install && npm initial-db-start && npm run build-frontend",
+    "initial-build": "npm install && bower install && npm run initial-db-start && npm run build-frontend",
 
     "build-frontend"  : "webpack",
     "develop-frontend": "webpack-dev-server --content-base=./frontend-app/public",
