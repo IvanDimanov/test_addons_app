@@ -23,7 +23,9 @@
     "develop-frontend": "webpack-dev-server --content-base=./frontend-app/public",
     "develop-backend": "cross-env NODE_ENV=production pm2 start babel_index.js --interpreter=babel-node --name=test_addons_app --log=screen.log",
     "postdevelop-backend": "(babel-node .watch.js --watch=./backend-app --command=\"pm2 restart test_addons_app\" >> .watch.log &)",
-    "develop-backend-stop": "pm2 stop test_addons_app"
+    "develop-backend-stop": "pm2 stop test_addons_app",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": ">=4.0"
@@ -89,9 +91,11 @@
     "webpack": "2.2.0",
     "webpack-dev-server": "1.14.0",
     "winston": "2.1.1",
-    "yargs": "3.31.0"
+    "yargs": "3.31.0",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "standard": "5.4.1"
-  }
+  },
+  "snyk": true
 }
